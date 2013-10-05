@@ -1,9 +1,9 @@
 # openfire admin operator
 module OpenfireAdmin
   # unexpected response found exception
-	class ResponceException < Exception
-	  attr_reader :response
-	  def initialize(message,res)
+  class ResponceException < Exception
+    attr_reader :response
+    def initialize(message,res)
       case res
       when Net::HTTPSuccess
         doc = Nokogiri::HTML(res.body)
@@ -21,7 +21,7 @@ module OpenfireAdmin
         super("#{message} res.code=#{res.code}")
       end
 
-			@response = res
-		end
-	end
+      @response = res
+    end
+  end
 end

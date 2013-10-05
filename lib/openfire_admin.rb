@@ -17,13 +17,13 @@ class OpenfireAdmin
       @http = HttpClient.new(URI.parse(loginurl))
     end
     def login(username, pass)
-			@http.post( "/login.jsp" , {
-					"login"=> "true",
-					"password"=>pass,
-					"url"=>"/index.jsp",
-					"username"=>username}) do |res|
-				raise ResponceException.new("can't login",res) unless res.code == "302"
-			end
+      @http.post( "/login.jsp" , {
+          "login"=> "true",
+          "password"=>pass,
+          "url"=>"/index.jsp",
+          "username"=>username}) do |res|
+        raise ResponceException.new("can't login",res) unless res.code == "302"
+      end
     end
     def remove_property(name)
       @http.post('/server-properties.jsp', 'propName' => name, 'del'=>'true') do |res|
@@ -44,15 +44,15 @@ class OpenfireAdmin
     end
     def get_properties
       ret = {}
-	    @http.get("/server-properties.jsp") do |res|
+      @http.get("/server-properties.jsp") do |res|
         raise ResponceException.new("can't read",res) unless res.code== "200"
         doc = Nokogiri::HTML(res.body)
         doc.search('//h1/parent::node()//table/tbody/tr[@class=""]').each do |tr|
-					v = tr.at('td[2] span')[:title]
-					v = "" if v == NBSP
+          v = tr.at('td[2] span')[:title]
+          v = "" if v == NBSP
           ret[tr.at('td span')[:title]]= v
         end
-		  end
+      end
       ret
     end
     def get_installed_plugins
@@ -107,27 +107,27 @@ class OpenfireAdmin
       end
     end
     def reload_plugin(key)
-	    @http.get("/plugin-admin.jsp?reloadplugin=#{key}") do |res|
-				raise ResponceException.new("cant reload",res) if res.code != "302" or res['location'] !~ /reloadsuccess=true/
-		  end
+      @http.get("/plugin-admin.jsp?reloadplugin=#{key}") do |res|
+        raise ResponceException.new("cant reload",res) if res.code != "302" or res['location'] !~ /reloadsuccess=true/
+      end
     end
     def uninstall_plugin(key)
-	    @http.get("/plugin-admin.jsp?deleteplugin=#{key}") do |res|
-				raise ResponceException.new("cant delete",res) if res.code != "302" or res['location'] !~ /deletesuccess=true/
-		  end
+      @http.get("/plugin-admin.jsp?deleteplugin=#{key}") do |res|
+        raise ResponceException.new("cant delete",res) if res.code != "302" or res['location'] !~ /deletesuccess=true/
+      end
     end
     def system_cache
-	    @http.get("/system-cache.jsp") do |res|
+      @http.get("/system-cache.jsp") do |res|
         Nokogiri::HTML(res.body).search('input[type=checkbox][name=cacheID]').map{|i|
           {
             :cacheID => i[:value],
             :name => i.ancestors("tr").first.search("td td")[1].content.strip
           }
         }
-		  end
+      end
     end
     def system_cache_clear(cacheID)
-	    @http.post("/system-cache.jsp","cacheID"=>cacheID, "clear"=>"Clear") do |res|
+      @http.post("/system-cache.jsp","cacheID"=>cacheID, "clear"=>"Clear") do |res|
         ! Nokogiri::HTML(res.body).at("div[class='jive-success']").nil?
       end
     end
@@ -146,8 +146,8 @@ class OpenfireAdmin
   end
 
   def initialize(loginurl="http://localhost:9090")
-	  @client = AdminClient.new(loginurl)
-	end
+    @client = AdminClient.new(loginurl)
+  end
   def logined?
     @logined
   end
@@ -198,9 +198,9 @@ class OpenfireAdmin
   end
 
   # get properties
-	def system_properties
+  def system_properties
     PropertyMap.new(@client)
-	end
+  end
 
   # cache control. this instance can clear cache.
   class SystemCache
@@ -225,13 +225,13 @@ class OpenfireAdmin
   end
 
   # plugin abstract class
-	class Plugin
-	  attr_accessor :name, :description, :version
+  class Plugin
+    attr_accessor :name, :description, :version
     attr_reader :key
-		def initialize(client, key)
-		  @client = client
+    def initialize(client, key)
+      @client = client
       @key = key.downcase
-		end
+    end
     def inspect
       to_s
     end
@@ -248,61 +248,61 @@ class OpenfireAdmin
         false
       end
     end
-	end
+  end
 
   # installed plugin. this instance can uninstall and reload
-	class InstalledPlugin < Plugin
+  class InstalledPlugin < Plugin
     # reload plugin
-		def reload
+    def reload
       @client.reload_plugin(key)
-		end
+    end
 
     # uninstall plugin
-		def uninstall
+    def uninstall
       @client.uninstall_plugin(key)
-		end
-	end
+    end
+  end
 
   # available plugin. this can install
-	class AvailablePlugin < Plugin
-	  attr_accessor :url
+  class AvailablePlugin < Plugin
+    attr_accessor :url
 
     # install plugin
-		def install
+    def install
       @client.install_plugin(url)
     end
-	end
+  end
 
   # plugin list array. this can find plugin by key.
   class PluginList < Array
-		def [](name)
+    def [](name)
       if name.is_a?(String)
-		    self.find{|p| p.eql? name }
+        self.find{|p| p.eql? name }
       else
         super
       end
-		end
-	end
+    end
+  end
 
   # plugins list array of available plugins.
   # if you need not installed plugins, ( self.available_plugins - self.install_plugin )
-	def available_plugins
-	  ret = PluginList.new
-	  doc = Nokogiri::XML(open("http://www.igniterealtime.org/projects/openfire/versions.jsp").read)
-		doc.search('plugin').each do |tr|
-			p = AvailablePlugin.new(@client, tr[:url].match(/\/([^\.\/]+)\.[^\/.]+$/)[1])
-			p.name = tr[:name]
-			p.description = tr[:description]
-			p.version = tr[:latest]
-			p.url = tr[:url]
-			ret << p
-		end
-		ret
-	end
+  def available_plugins
+    ret = PluginList.new
+    doc = Nokogiri::XML(open("http://www.igniterealtime.org/projects/openfire/versions.jsp").read)
+    doc.search('plugin').each do |tr|
+      p = AvailablePlugin.new(@client, tr[:url].match(/\/([^\.\/]+)\.[^\/.]+$/)[1])
+      p.name = tr[:name]
+      p.description = tr[:description]
+      p.version = tr[:latest]
+      p.url = tr[:url]
+      ret << p
+    end
+    ret
+  end
 
   # plugins list array of installed plugins
-	def installed_plugins
-	  ret = PluginList.new
+  def installed_plugins
+    ret = PluginList.new
     @client.get_installed_plugins.each{|p|
       r = InstalledPlugin.new(@client, p[:key])
       r.name = p[:name]
@@ -310,6 +310,6 @@ class OpenfireAdmin
       r.version = p[:version]
       ret << r
     }
-		ret
-	end
+    ret
+  end
 end
