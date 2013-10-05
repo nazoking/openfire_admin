@@ -1,8 +1,15 @@
 # OpenfireAdmin
 
-Controll Openfire Admin by ruby. (by web scraping)
-Openfire is xmpp server for internet chat.
-for Opscode chef.
+Controll Openfire Admin by ruby. (by web scraping,
+ no need openfire plugins)
+
+Openfire is real time collaboration server.
+http://www.igniterealtime.org/projects/openfire/
+
+This library is designed for Opscode chef.
+
+spin out from the openfire-chef recipe.
+https://github.com/team-lab/openfire-chef
 
 ## Installation
 
@@ -18,9 +25,11 @@ Or install it yourself as:
 
     $ gem install openfire_admin
 
-## Usage
+## TODO
 
-TODO: Write usage instructions here
+1. write test.
+2. refactoring code
+3. write comment, and document.
 
 ## Contributing
 
