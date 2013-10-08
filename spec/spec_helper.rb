@@ -62,6 +62,7 @@ module FakeWebHelper
     FakeWeb.allow_net_connect = false
     ret = yield
     FakeWeb.clean_registry
+    FakeWeb.allow_net_connect = true
     ret
   end
   def expect_get(path,option)
