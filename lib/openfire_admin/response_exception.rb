@@ -1,3 +1,5 @@
+require 'nokogiri'
+require 'net/http'
 # openfire admin operator
 module OpenfireAdmin
   # unexpected response found exception

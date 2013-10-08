@@ -1,0 +1,32 @@
+<available>
+  <plugin name="Client Control"
+    description="Controls clients allowed to connect and available features"
+    url="http://www.igniterealtime.org/projects/openfire/plugins/clientControl.jar"
+    icon="http://www.igniterealtime.org/projects/openfire/plugins/cache/clientcontrol.gif"
+    readme="http://www.igniterealtime.org/projects/openfire/plugins/clientcontrol/readme.html"
+    changelog="http://www.igniterealtime.org/projects/openfire/plugins/clientcontrol/changelog.html"
+    latest="1.1.0"
+    author="Jive Software"
+    minServerVersion="3.7.0"
+    fileSize="102487"/>
+  
+  
+  <plugin name="SIP Phone Plugin"
+    description="Provides support for SIP account management"
+    url="http://www.igniterealtime.org/projects/openfire/plugins/sip.jar"
+    icon="http://www.igniterealtime.org/projects/openfire/plugins/cache/sip.gif"
+    readme="http://www.igniterealtime.org/projects/openfire/plugins/sip/readme.html"
+    changelog="http://www.igniterealtime.org/projects/openfire/plugins/sip/changelog.html"
+    latest="1.0.6"
+    author="Ignite Realtime"
+    minServerVersion="3.7.0"
+    fileSize="192647"/>
+  <plugin name="Registration" 
+    description="Performs various actions whenever a new user account is created."
+    url="http://www.igniterealtime.org/projects/openfire/plugins/registration.jar"
+    icon="http://www.igniterealtime.org/projects/openfire/plugins/cache/registration.gif"
+    readme="http://www.igniterealtime.org/projects/openfire/plugins/registration/readme.html"
+    changelog="http://www.igniterealtime.org/projects/openfire/plugins/registration/changelog.html"
+    latest="1.5.0" author="Ryan Graham" minServerVersion="3.7.0" 
+    fileSize="26897"/>
+</available>

@@ -27,9 +27,7 @@ Or install it yourself as:
 
 ## TODO
 
-1. write test.
-2. refactoring code
-3. write comment, and document.
+1. write comment, and document.
 
 ## Contributing
 

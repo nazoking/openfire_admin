@@ -1,3 +1,4 @@
+require 'net/http'
 module OpenfireAdmin
   # http client ( cookie support )
   class HttpClient
@@ -35,7 +36,7 @@ module OpenfireAdmin
     def post(path, form_data)
       req = Net::HTTP::Post.new(path)
       req.set_form_data(form_data)
-      request(req){|res|  yield res }
+      request(req){|res| yield res }
     end
 
     # get path
