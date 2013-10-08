@@ -4,6 +4,9 @@ require 'bundler/setup'
 require 'openfire_admin'
 require 'fakeweb'
 
+require 'coveralls'
+Coveralls.wear!
+
 module FakeWebHelper
   def path_of(url)
     "http://localhost:9090#{url}"
@@ -87,5 +90,4 @@ end
 
 RSpec.configure do |config|
   config.include FakeWebHelper
-  # some (optional) config here
 end
