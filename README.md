@@ -1,6 +1,6 @@
 # OpenfireAdmin
 
-[![Build Status](https://travis-ci.org/nazoking/openfire_admin.png?branch=master)](https://travis-ci.org/nazoking/openfire_admin
+[![Build Status](https://travis-ci.org/nazoking/openfire_admin.png?branch=master)](https://travis-ci.org/nazoking/openfire_admin)
 [![Coverage Status](https://coveralls.io/repos/nazoking/openfire_admin/badge.png)](https://coveralls.io/r/nazoking/openfire_admin)
 [![Code Climate](https://codeclimate.com/github/nazoking/openfire_admin.png)](https://codeclimate.com/github/nazoking/openfire_admin)
 [![Dependency Status](https://gemnasium.com/nazoking/openfire_admin.png)](https://gemnasium.com/nazoking/openfire_admin)
