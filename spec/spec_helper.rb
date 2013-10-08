@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'bundler/setup'
+require 'coveralls'
+Coveralls.wear!
 
+require 'bundler/setup'
 require 'openfire_admin'
 require 'fakeweb'
 
-require 'coveralls'
-Coveralls.wear!
 
 module FakeWebHelper
   def path_of(url)
