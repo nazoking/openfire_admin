@@ -30,6 +30,10 @@ Or install it yourself as:
 
     $ gem install openfire_admin
 
+## API Document
+
+http://rubydoc.info/gems/openfire_admin/frames/file/README.md
+
 ## TODO
 
 1. write comment, and document.
