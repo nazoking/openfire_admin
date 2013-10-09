@@ -4,9 +4,9 @@ require File.expand_path('../lib/openfire_admin/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["nazoking"]
   gem.email         = ["nazoking@gmai.com"]
-  gem.description   = %q{Manipurate Openfire admin console}
-  gem.summary       = %q{}
-  gem.homepage      = ""
+  gem.description   = %q{Control for Openfire admin console}
+  gem.summary       = %q{Control for Openfire admin console}
+  gem.homepage      = "https://github.com/nazoking/openfire_admin"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -14,6 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = "openfire_admin"
   gem.require_paths = ["lib"]
   gem.version       = OpenfireAdmin::VERSION
+
+  gem.add_dependency "nokogiri"
 
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "fakeweb"
