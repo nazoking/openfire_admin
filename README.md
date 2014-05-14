@@ -35,6 +35,16 @@ Or install it yourself as:
 
 http://rubydoc.info/gems/openfire_admin/frames/file/README.md
 
+## make develop directory
+
+```
+ bundle install --path .bundle/gems --binstubs bin/
+```
+
+### run test
+
+ ./bin/rspec
+
 ## TODO
 
 1. write comment, and document.
