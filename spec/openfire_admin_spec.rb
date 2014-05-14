@@ -59,6 +59,20 @@ describe OpenfireAdmin::Client do
     }
     client.logined?.should be_true
   end
+  it "login fail" do
+    client = OpenfireAdmin.new
+    client.logined?.should be_false
+    proc {
+      expect_post( "/login.jsp",{
+        "login"=>"true",
+        "password"=>"bbb",
+        "username"=>"aaa"},
+        "/login-fail.jsp"){
+        client.login("aaa","bbb")
+      }
+    }.should raise_error( OpenfireAdmin::ResponceException, /Login failed/ )
+    client.logined?.should be_false
+  end
   it "can operate setup mode" do
     client = OpenfireAdmin.new
     expect_get( "/login.jsp", :body=>"hoge"){
