@@ -1,6 +1,9 @@
 require 'rubygems'
-require 'coveralls'
-Coveralls.wear!
+begin
+  require 'coveralls'
+  Coveralls.wear!
+rescue LoadError
+end
 
 require 'bundler/setup'
 require 'openfire_admin'
