@@ -1,13 +1,16 @@
 require 'net/http'
 module OpenfireAdmin
-  # http client ( cookie support )
+  # simple http client ( cookie support )
   class HttpClient
+    # @param [URI] url  admin console uri. HttpClient use its host , port and scheme
     def initialize(url)
       @cookies = {}
       @url = url
       requrie 'net/https' if @url.scheme == 'https'
     end
 
+    # @param [Net::HTTPRequest] request
+    # @yield [Net::HTTPResponse]
     def request(req)
       Net::HTTP.start(@url.host, @url.port) do |http|
         http.use_ssl = true if @url.scheme == 'https'
@@ -33,6 +36,9 @@ module OpenfireAdmin
     end
 
     # post with form data
+    # @param [String] request path
+    # @param [Hash<String,String>] form data
+    # @yield [Net::HTTPResponse]
     def post(path, form_data)
       req = Net::HTTP::Post.new(path)
       req.set_form_data(form_data)
@@ -40,6 +46,8 @@ module OpenfireAdmin
     end
 
     # get path
+    # @param [String] request path
+    # @yield [Net::HTTPResponse]
     def get(path)
       request(Net::HTTP::Get.new(path)){|res| yield res }
     end
