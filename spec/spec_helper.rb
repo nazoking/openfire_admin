@@ -1,10 +1,17 @@
 require 'rubygems'
-require 'coveralls'
-Coveralls.wear!
+begin
+  require 'coveralls'
+  Coveralls.wear!
+rescue LoadError
+end
 
 require 'bundler/setup'
 require 'openfire_admin'
 require 'fakeweb'
+
+unless URI.respond_to?(:decode_www_form) # for ruby 1.8
+  require File.dirname(__FILE__)+"/uri_backport" 
+end
 
 
 module FakeWebHelper

@@ -1,22 +1,22 @@
-require 'nokogiri'
+require 'openfire_admin/html_parser'
 require 'openfire_admin/admin_client'
 
 module OpenfireAdmin
   class AdminClient
     def get_installed_plugins
       get("/plugin-admin.jsp") do |res|
-        doc =Nokogiri::HTML(res.body)
-        doc.at('h1').parent.at('table').search('tbody tr[valign=top]').map do |tr|
-          img = tr.at('a[href*="reloadplugin="]')
+        doc = HtmlParser.new(res.body)
+        doc.search("//h1/parent::*//table/tbody/tr[@valign='top']"){|tr|
+          img = tr.at('//a[contains(@href,"reloadplugin=")]')
           if img
             {
               :key => img[:href].match(/\?reloadplugin=([^"'&>]*)/)[1],
-              :name => tr.search('td')[1].content.gsub(NBSP,' ').strip,
-              :description => tr.search('td')[3].content.strip,
-              :version => tr.search('td')[4].content.strip
+              :name => tr.search('td')[1].text.strip,
+              :description => tr.search('td')[3].text.strip,
+              :version => tr.search('td')[4].text.strip
             }
           end
-        end
+        }.collect
       end
     end
     def install_plugin(url)
@@ -117,14 +117,14 @@ module OpenfireAdmin
     def self.availables(client, xml=nil)
       xml = open(PLUGIN_LIST_URL).read unless xml
       ret = PluginList.new
-      doc = Nokogiri::XML(xml)
-      doc.search('plugin').each do |tr|
-        p = AvailablePlugin.new(client, tr[:url].match(/\/([^\.\/]+)\.[^\/.]+$/)[1])
-        p.name = tr[:name]
-        p.description = tr[:description]
-        p.version = tr[:latest]
-        p.url = tr[:url]
-        ret << p
+      doc = HtmlParser.new(xml)
+      doc.search('//plugin') do |tr|
+        ap = AvailablePlugin.new(client, tr[:url].match(/\/([^\.\/]+)\.[^\/.]+$/)[1])
+        ap.name = tr[:name]
+        ap.description = tr[:description]
+        ap.version = tr[:latest]
+        ap.url = tr[:url]
+        ret << ap
       end
       ret
     end
