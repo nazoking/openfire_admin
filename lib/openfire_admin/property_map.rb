@@ -1,4 +1,4 @@
-require 'nokogiri'
+require 'openfire_admin/html_parser'
 require 'openfire_admin/admin_client'
 
 module OpenfireAdmin
@@ -15,20 +15,20 @@ module OpenfireAdmin
     end
     def get_property(name)
       post("/server-properties.jsp", "edit"=>"true", "propName"=>name) do |res|
-        ta = Nokogiri::HTML(res.body).at('textarea[name=propValue]')
+        ta = HtmlParser.new(res.body).at('//textarea[@name="propValue"]')
         raise ResponceException.new("not found textarea",res) unless ta
-        ta.content.to_s
+        ta.text.to_s
       end
     end
     def get_properties
       ret = {}
       get("/server-properties.jsp") do |res|
         raise ResponceException.new("can't read",res) unless res.code== "200"
-        doc = Nokogiri::HTML(res.body)
+        doc = HtmlParser.new(res.body)
         doc.search('//h1/parent::node()//table/tbody/tr[@class=""]').each do |tr|
-          v = tr.at('td[2] span')[:title]
+          v = tr.at('//td[2]//span')[:title]
           v = "" if v == NBSP
-          ret[tr.at('td span')[:title]]= v
+          ret[tr.at('//td//span')[:title]]= v
         end
       end
       ret

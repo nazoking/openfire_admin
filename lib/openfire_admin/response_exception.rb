@@ -1,4 +1,4 @@
-require 'nokogiri'
+require 'openfire_admin/html_parser'
 require 'net/http'
 # openfire admin operator
 module OpenfireAdmin
@@ -8,8 +8,8 @@ module OpenfireAdmin
     def initialize(message,res)
       case res
       when Net::HTTPSuccess
-        doc = Nokogiri::HTML(res.body)
-        msgs = ( doc.search('.jive-error-text, .error') || [] ).map{|c| c.text.strip}
+        doc = HtmlParser.new(res.body)
+        msgs = ( doc.search('//*[contains(@class,"jive-error-text") or contains(@class , "error")]') || [] ).map{|c| c.text.strip}
         if msgs.empty?
           super(message)
         else
