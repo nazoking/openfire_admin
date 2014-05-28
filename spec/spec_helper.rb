@@ -9,6 +9,10 @@ require 'bundler/setup'
 require 'openfire_admin'
 require 'fakeweb'
 
+unless URI.respond_to?(:decode_www_form) # for ruby 1.8
+  require File.dirname(__FILE__)+"/uri_backport" 
+end
+
 
 module FakeWebHelper
   def path_of(url)
