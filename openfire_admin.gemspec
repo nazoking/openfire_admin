@@ -17,6 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "rehtml"
 
-  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rspec", "= 2.14.1"
   gem.add_development_dependency "fakeweb"
 end
