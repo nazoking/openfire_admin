@@ -1,5 +1,6 @@
 require 'openfire_admin/html_parser'
 require 'openfire_admin/admin_client'
+require 'openfire_admin/version_string'
 
 module OpenfireAdmin
   class AdminClient
@@ -25,6 +26,16 @@ module OpenfireAdmin
       get("/server-properties.jsp") do |res|
         raise ResponceException.new("can't read",res) unless res.code== "200"
         doc = HtmlParser.new(res.body)
+        version = VersionString.new(/Openfire ([0-9.]*)/.match(doc.at("//div[@id='jive-userstatus']").text.to_s)[1])
+        if version >= "3.9.2"
+          def ret.strong_hidden?
+            true
+          end
+        else
+          def ret.strong_hidden?
+            false
+          end
+        end
         doc.search('//h1/parent::node()//table/tbody/tr[@class=""]').each do |tr|
           v = tr.at('//td[2]//span')[:title]
           v = "" if v == NBSP
@@ -45,11 +56,22 @@ module OpenfireAdmin
       @cache.inspect
     end
 
+    def strong_hidden?
+      @cache.strong_hidden?
+    end
+
     # get system property
     def []( name )
       v = @cache[name]
-      v = @client.get_property(name) if v.nil? and @cache.has_key?(name)
-      v
+      if v.nil? and @cache.has_key?(name)
+        if strong_hidden?
+          :hide
+        else
+          @client.get_property(name)
+        end
+      else
+        v
+      end
     end
 
     # reload cache

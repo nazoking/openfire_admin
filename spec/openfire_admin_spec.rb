@@ -152,6 +152,7 @@ describe OpenfireAdmin::Client do
       s["jdbcAuthProvider.passwordSQL"].should == "SELECT psw as password FROM users WHERE jid = ?"
     }
 
+    s.strong_hidden?.should be_false
     expect_post("/server-properties.jsp",{
       "save"=>"Save Property",
       "propName"=>"jdbcAuthProvider.passwordSQL",
@@ -167,6 +168,18 @@ describe OpenfireAdmin::Client do
       s.remove "jdbcAuthProvider.passwordSQL"
     }
 
+  end
+  it "can't read  hidden operate system properties version 3.9.3" do
+    client = OpenfireAdmin.new
+    s = nil
+    expect_get("/server-properties.jsp","/server-properties.3.9.3.jsp"){
+      s = client.system_properties
+      s.should be_a_kind_of(OpenfireAdmin::PropertyMap)
+      s["xmpp.socket.ssl.active"].should == "true"
+      s["not.exists.key"].should be_nil
+    }
+    s.strong_hidden?.should be_true
+    s["jdbcAuthProvider.passwordSQL"].should == :hide
   end
   it "can operate system cache" do
     client = OpenfireAdmin.new
